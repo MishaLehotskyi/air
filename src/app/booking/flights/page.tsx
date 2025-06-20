@@ -10,6 +10,7 @@ import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { FormEvent, useState } from 'react';
 import BottomDrawer from "@/components/BottomDrawer";
 import Image from 'next/image'
+import PaymentMethodSelector from "@/components/PaymentMethodSelector";
 
 export default function Booking() {
   const stripe = useStripe();
@@ -117,17 +118,17 @@ export default function Booking() {
         </div>
         <div className={"text-[10px] text-[rgb(116,124,139)] leading-[14px]"}>Convenience fee added</div>
       </div>
-      <form onSubmit={handleSubmit} className={"bg-white p-[16px] flex flex-col"}>
+      <div className={"bg-white p-[16px] flex flex-col"}>
         <div className={"flex flex-row text-[20px] font-bold"}>
           <div className={"text-[rgb(73,66,82)] leading-[28px]"}>Total price:</div>
           <div className={"text-[rgb(103,1,228)] leading-[28px] ml-[8px]"}>$785</div>
         </div>
         <div className={"text-[12px] text-[rgb(116,124,139)] leading-[16px]"}>For 1 passenger</div>
-        <div className={"text-[12px] text-[rgb(116,124,139)] leading-[16px] mb-[12px]"}>Convenience fee added</div>
-        <PaymentElement />
+        <div className={"text-[12px] text-[rgb(116,124,139)] leading-[16px]"}>Convenience fee added</div>
+        <PaymentMethodSelector />
         {error && <div className="text-red-500 text-sm">{error}</div>}
-        <button type={"submit"} disabled={!stripe || loading} className={"mt-[16px] bg-[rgb(103,1,228)] text-white font-bold h-[52px] px-[24px] py-[12px] rounded-[12px] text-[20px] hover:bg-purple-800 transition duration-[0.3s] cursor-pointer"} >{loading ? 'Processing...' : 'Pay Now'}</button>
-      </form>
+        <button type={"submit"} className={"mt-[16px] bg-[rgb(103,1,228)] text-white font-bold h-[52px] px-[24px] py-[12px] rounded-[12px] text-[20px] hover:bg-purple-800 transition duration-[0.3s] cursor-pointer"} >{'PAY'}</button>
+      </div>
       <BottomDrawer isOpen={showDrawer} onClose={() => setShowDrawer(false)}>
         <div className={"h-[68px] p-[16px] flex flex-row justify-between"} >
           <div className={"text-[rgb(73,66,82)] text-[20px] leading-[28px] font-bold"} >Flight details</div>

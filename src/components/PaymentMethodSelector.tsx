@@ -12,7 +12,7 @@ type CardForm = {
 };
 
 export default function PaymentMethodSelector() {
-  const [method, setMethod] = useState<'card' | 'gpay'>('card');
+  const [method, setMethod] = useState<'card' | 'gpay' | null>(null);
 
   const activeBox = 'bg-purple-100';
   const inactiveBox = 'bg-white';
@@ -161,22 +161,6 @@ export default function PaymentMethodSelector() {
       </AnimatePresence>
 
       {/* Google Pay */}
-      <div
-        className={`py-[8px] h-[64px] px-[16px] hover:bg-purple-200 transition duration-[0.3s] rounded-xl cursor-pointer flex items-center justify-between ${method === 'gpay' ? activeBox : inactiveBox}`}
-        onClick={() => setMethod('gpay')}
-      >
-        <label className="flex items-center gap-[13px] cursor-pointer">
-          <input
-            type="radio"
-            name="payment"
-            className="accent-purple-800 h-[20px] w-[20px]"
-            checked={method === 'gpay'}
-            onChange={() => setMethod('gpay')}
-          />
-          <span className="text-sm font-bold text-[rgb(73,66,82)]">Google Pay</span>
-          <Image src="/Gpay-logo.png" alt="Gpay" width={60} height={40} />
-        </label>
-      </div>
       </div>
     </div>
   );
