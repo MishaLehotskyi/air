@@ -6,37 +6,14 @@ import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import LuggageOutlinedIcon from '@mui/icons-material/LuggageOutlined';
-import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import BottomDrawer from "@/components/BottomDrawer";
 import Image from 'next/image'
 import PaymentMethodSelector from "@/components/PaymentMethodSelector";
 
 export default function Booking() {
-  const stripe = useStripe();
-  const elements = useElements();
   const [showDrawer, setShowDrawer] = useState(false);
   const [showDrawerSecond, setShowDrawerSecond] = useState(false);
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    if (!stripe || !elements) return;
-
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: 'https://w0wtickets.com/success',
-      },
-    });
-
-    if (error) setError(error.message || 'Payment failed');
-    setLoading(false);
-  };
 
   return (
     <div className={"bg-[rgb(241,242,246)] flex flex-col"} >
@@ -126,7 +103,6 @@ export default function Booking() {
         <div className={"text-[12px] text-[rgb(116,124,139)] leading-[16px]"}>For 1 passenger</div>
         <div className={"text-[12px] text-[rgb(116,124,139)] leading-[16px]"}>Convenience fee added</div>
         <PaymentMethodSelector />
-        {error && <div className="text-red-500 text-sm">{error}</div>}
         <button type={"submit"} className={"mt-[16px] bg-[rgb(103,1,228)] text-white font-bold h-[52px] px-[24px] py-[12px] rounded-[12px] text-[20px] hover:bg-purple-800 transition duration-[0.3s] cursor-pointer"} >{'PAY'}</button>
       </div>
       <BottomDrawer isOpen={showDrawer} onClose={() => setShowDrawer(false)}>
