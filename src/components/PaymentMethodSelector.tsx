@@ -18,15 +18,15 @@ export default function PaymentMethodSelector() {
   const inactiveBox = 'bg-white';
   const {
     register,
-    handleSubmit,
+  //  handleSubmit,
     setValue,
     watch,
     formState: { errors },
   } = useForm<CardForm>({ mode: 'onChange' });
 
-  const onSubmit = (data: CardForm) => {
-    console.log('Submitted:', data);
-  };
+  //const onSubmit = (data: CardForm) => {
+  //  console.log('Submitted:', data);
+  //};
 
   const expiryRaw = watch('expiry');
   useEffect(() => {
