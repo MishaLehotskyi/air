@@ -29,7 +29,7 @@ export default function Booking() {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:3000/success',
+        return_url: 'http://localhost:3001/success',
       },
     });
 
