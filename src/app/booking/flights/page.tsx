@@ -6,7 +6,7 @@ import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import LuggageOutlinedIcon from '@mui/icons-material/LuggageOutlined';
-import { useState } from 'react';
+import {useState} from 'react';
 import BottomDrawer from "@/components/BottomDrawer";
 import Image from 'next/image'
 import PaymentMethodSelector from "@/components/PaymentMethodSelector";
@@ -195,7 +195,7 @@ export default function Booking() {
             <XMarkIcon className="w-5 h-5 text-[rgb(242,28,181)]"/>
           </div>
         </div>
-        <div className={"px-[16px] pb-[16px] flex flex-col max-h-[577px] overflow-y-auto"}>
+        <div className={"px-[16px] pb-[16px] flex flex-col h-[300px] overflow-y-auto"}>
           <div className={"flex flex-col gap-[8px] mb-[8px]"}>
             <div className={"text-[rgb(73,66,82)] text-[16px] leading-[24px] font-bold"}>Moscow — New York City</div>
             <div className={"text-[rgb(109,112,120)] text-[12px]"}>otal trip duration: 18h 55m</div>
@@ -369,7 +369,7 @@ export default function Booking() {
         </div>
       </BottomDrawer>
       {showModal && (
-        <Modal onClose={() => setShowModal(false)}>
+        <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
           {loading
             ? <div className={"h-[128px] flex items-center justify-center"} ><Loader /></div>
             : <>

@@ -1,13 +1,16 @@
 'use client';
 import ReactDOM from 'react-dom';
 import {XMarkIcon} from "@heroicons/react/24/outline";
+import {useBodyScrollLock} from "@/hooks/useBodyScrollLock";
 
 type ModalProps = {
   children: React.ReactNode;
+  isOpen: boolean;
   onClose: () => void;
 };
 
-export default function Modal({ children, onClose }: ModalProps) {
+export default function Modal({ children, isOpen, onClose }: ModalProps) {
+  useBodyScrollLock(isOpen);
   if (typeof window === 'undefined') return null;
 
   const modalRoot = document.getElementById('modal-root');

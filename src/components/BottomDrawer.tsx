@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { ReactNode } from 'react';
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 type Props = {
   isOpen: boolean;
@@ -10,6 +11,8 @@ type Props = {
 };
 
 export default function BottomDrawer({ isOpen, onClose, children }: Props) {
+  useBodyScrollLock(isOpen);
+
   return (
     <AnimatePresence>
       {isOpen && (
