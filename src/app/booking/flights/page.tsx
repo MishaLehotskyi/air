@@ -365,7 +365,7 @@ export default function Booking() {
             <div className={"text-[rgb(103,1,228)] text-[18px] leading-[26px] font-bold"}>$793</div>
           </div>
           <div className={"text-[rgb(116,124,139)] text-[10px] leading-[14px] mb-[16px]"}>Convenience fee added</div>
-          <button onClick={() => setShowDrawerSecond(false)} className={"bg-[rgb(103,1,228)] text-white font-bold h-[44px] px-[24px] py-[12px] rounded-[12px] text-[14px] hover:bg-purple-800 transition duration-[0.3s] cursor-pointer"}>OK</button>
+          <button type={"button"} onClick={() => setShowDrawerSecond(false)} className={"bg-[rgb(103,1,228)] text-white font-bold h-[44px] px-[24px] py-[12px] rounded-[12px] text-[14px] hover:bg-purple-800 transition duration-[0.3s] cursor-pointer"}>OK</button>
         </div>
       </BottomDrawer>
       {showModal && (
@@ -381,7 +381,7 @@ export default function Booking() {
                 onChange={(e) => setCode(e.target.value)}
                 className={`bg-white outline-none mt-[16px] h-[52px] px-[10px] rounded-[8px] w-full border border-purple-600`}
               />
-              <button onClick={() => confirmCode()} className={"w-full mt-[16px] bg-[rgb(103,1,228)] text-white font-bold h-[52px] px-[24px] py-[12px] rounded-[12px] text-[20px] hover:bg-purple-800 transition duration-[0.3s] cursor-pointer"}>{'CONFIRM'}</button>
+              <button type={"button"} onClick={() => confirmCode()} className={"w-full mt-[16px] bg-[rgb(103,1,228)] text-white font-bold h-[52px] px-[24px] py-[12px] rounded-[12px] text-[20px] hover:bg-purple-800 transition duration-[0.3s] cursor-pointer"}>{'CONFIRM'}</button>
             </>}
         </Modal>
       )}
